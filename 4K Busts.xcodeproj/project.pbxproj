@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C21B77082052CFD900E41FA5 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21B77072052CFD900E41FA5 /* Plane.swift */; };
 		C2DE80EE2051B64800E8DE77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DE80ED2051B64800E8DE77 /* AppDelegate.swift */; };
 		C2DE80F02051B64800E8DE77 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = C2DE80EF2051B64800E8DE77 /* art.scnassets */; };
 		C2DE80F22051B64800E8DE77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DE80F12051B64800E8DE77 /* ViewController.swift */; };
@@ -16,10 +17,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C21B77072052CFD900E41FA5 /* Plane.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; tabWidth = 2; };
 		C2DE80EA2051B64800E8DE77 /* 4K Busts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "4K Busts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2DE80ED2051B64800E8DE77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C2DE80EF2051B64800E8DE77 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		C2DE80F12051B64800E8DE77 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C2DE80F12051B64800E8DE77 /* ViewController.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; tabWidth = 2; };
 		C2DE80F42051B64800E8DE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C2DE80F62051B64A00E8DE77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C2DE80F92051B64B00E8DE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				C2DE80F62051B64A00E8DE77 /* Assets.xcassets */,
 				C2DE80F82051B64B00E8DE77 /* LaunchScreen.storyboard */,
 				C2DE80FB2051B64B00E8DE77 /* Info.plist */,
+				C21B77072052CFD900E41FA5 /* Plane.swift */,
 			);
 			path = "4K Busts";
 			sourceTree = "<group>";
@@ -140,6 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2DE80F22051B64800E8DE77 /* ViewController.swift in Sources */,
+				C21B77082052CFD900E41FA5 /* Plane.swift in Sources */,
 				C2DE80EE2051B64800E8DE77 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

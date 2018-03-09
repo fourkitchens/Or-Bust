@@ -2,79 +2,134 @@
 //  ViewController.swift
 //  4K Busts
 //
-//  Created by Flip on 3/8/18.
-//  Copyright © 2018 Four Kitchens. All rights reserved.
+//  Created by Flip on 7/19/17.
+//  Copyright © 2017 Flip. All rights reserved.
 //
 
+import ARKit
 import UIKit
 import SceneKit
-import ARKit
+import SceneKit.ModelIO
+import Foundation
 
-class ViewController: UIViewController, ARSCNViewDelegate {
-
-    @IBOutlet var sceneView: ARSCNView!
+class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate {
+  
+  @IBOutlet var sceneView: ARSCNView!
+  
+  // Keep track of the planes
+  var planes: [UUID:Plane] = [:]
+  
+  // Keep track of which type of block is selected
+  var selectedBlockType: Int = 0
+  
+  // Hide the status bar
+  override var prefersStatusBarHidden: Bool {
+      return true
+  }
+  
+  // Add planes
+  internal func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+      if let planeAnchor = anchor as? ARPlaneAnchor {
+          planes[planeAnchor.identifier] = Plane(with: planeAnchor)
+          node.addChildNode(planes[planeAnchor.identifier]!)
+      }
+  }
+  
+  // Update planes
+  func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+      planes[anchor.identifier]!.update(anchor: anchor as! ARPlaneAnchor)
+  }
+  
+  // Remove planes
+  func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
+      planes.removeValue(forKey: anchor.identifier)
+  }
+  
+  override func viewDidLoad() {
+      super.viewDidLoad()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Set the view's delegate
-        sceneView.delegate = self
-        
-        // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
-        
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
-        sceneView.scene = scene
+      // Setup the scene
+      sceneView.delegate = self
+      sceneView.showsStatistics = false
+      sceneView.autoenablesDefaultLighting = true
+      sceneView.scene = SCNScene()
+    
+      // Add physics
+      sceneView.scene.physicsWorld.gravity = SCNVector3Make(0.0, -1.225, 0.0)
+      sceneView.scene.physicsWorld.speed = 0.5
+      sceneView.scene.physicsWorld.contactDelegate = self
+    
+      // Attach tap recognition
+      sceneView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+      super.viewWillAppear(animated)
+    
+      // Detect planes
+      let configuration = ARWorldTrackingConfiguration()
+      configuration.planeDetection = .horizontal
+    
+      sceneView.session.run(configuration)
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+      // Show welcome prompt
+      let paragraphStyle = NSMutableParagraphStyle()
+      paragraphStyle.alignment = .left
+    
+      let messageText = NSMutableAttributedString(
+          string: "\n🤳 Move around and you'll see planes indicated by translucent platforms\n\n👉 Tap the platforms to place busts onto them!\n",
+          attributes: [
+              NSAttributedStringKey.paragraphStyle: paragraphStyle,
+              NSAttributedStringKey.font : UIFont.preferredFont(forTextStyle: .callout),
+              NSAttributedStringKey.foregroundColor : UIColor.black
+          ]
+      )
+    
+      let alert = UIAlertController(title: "Four Kitchens + ARKit", message: "", preferredStyle: .alert)
+      alert.setValue(messageText, forKey: "attributedMessage")
+      alert.addAction(UIAlertAction(title: "Neato! 👌", style: .default))
+    
+      present(alert, animated: true, completion: nil)
+  }
+  
+  // Add a bust to the world
+  func addBust(_ coordinates: SCNVector3) {
+    let node = SCNNode()
+    node.position = SCNVector3(
+      x: coordinates.x,
+      y: coordinates.y + 0.25,
+      z: coordinates.z
+    )
+    let constraint = SCNLookAtConstraint(target: sceneView.pointOfView)
+    constraint.localFront = SCNVector3(0, 0, 1)
+    constraint.isGimbalLockEnabled = true
+    node.constraints = [constraint]
+    let bundle = Bundle.main
+    let path = bundle.path(forResource: "./art.scnassets/model_mesh", ofType: "obj")
+    let url = NSURL(fileURLWithPath: path!)
+    let asset = MDLAsset(url: url as URL)
+    let scene = SCNScene(mdlAsset: asset)
+    let nodeArray = scene.rootNode.childNodes
+    
+    for childNode in nodeArray {
+      node.addChildNode(childNode as SCNNode)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
-
-        // Run the view's session
-        sceneView.session.run(configuration)
+    sceneView.scene.rootNode.addChildNode(node)
+  }
+  
+  @objc
+  func handleTap(_ gestureRecognize: UIGestureRecognizer) {
+    let location = gestureRecognize.location(in: view)
+    if location.y > view.frame.height - 50 {
+      return
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Pause the view's session
-        sceneView.session.pause()
+    if let result = sceneView.hitTest(location, options: [:]).first {
+      addBust(result.worldCoordinates)
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
-    }
-
-    // MARK: - ARSCNViewDelegate
-    
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
-    }
-*/
-    
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        // Present an error message to the user
-        
-    }
-    
-    func sessionWasInterrupted(_ session: ARSession) {
-        // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
-    }
-    
-    func sessionInterruptionEnded(_ session: ARSession) {
-        // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
-    }
+  }
 }
+
+
