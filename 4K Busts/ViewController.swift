@@ -136,7 +136,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
       }
       
-      Alamofire.download(URL(string: "https://flipactual.github.io/web-obj/model_mesh.obj")!, to: destination).response { response in
+      Alamofire.download(URL(string: "https://flipactual.github.io/web-obj/model_mesh.obj.mtl")!, to: getDestination(name: "model_mesh.obj.mtl"))
+      Alamofire.download(URL(string: "https://flipactual.github.io/web-obj/model_texture.jpg")!, to: getDestination(name: "model_texture.jpg"))
+      Alamofire.download(URL(string: "https://flipactual.github.io/web-obj/model_mesh.obj")!, to: getDestination(name: "model_mesh.obj")).response { response in
         if response.error == nil, let filePath = response.destinationURL?.path {
           let myUrl = "file://" + filePath
           
