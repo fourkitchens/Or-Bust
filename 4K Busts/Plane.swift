@@ -16,31 +16,53 @@ class Plane: SCNNode {
   // The geometry of rendered to represent the plane as a physical object
   var planeGeometry: SCNBox!
   
+  var material: SCNMaterial!
+  
   init(with anchor: ARPlaneAnchor) {
     super.init()
   
     self.anchor = anchor
-    let planeHeight = CGFloat(0.01)
+    let planeHeight = CGFloat(0.001)
   
     // Create the plane
-    let plane = SCNNode(geometry: SCNBox(width: CGFloat(anchor.extent.x), height: planeHeight, length: CGFloat(anchor.extent.z), chamferRadius: 0))
+    let plane = SCNNode(
+      geometry: SCNBox(
+        width: CGFloat(anchor.extent.x),
+        height: planeHeight,
+        length: CGFloat(anchor.extent.z),
+        chamferRadius: 0
+      )
+    )
     plane.position = SCNVector3Make(0, 0, 0)
   
     // Decorate the plane
-    plane.geometry!.firstMaterial!.diffuse.contents = UIColor(
-      hue: 0.31,
-      saturation: 0.57,
-      brightness: 1.00,
-      alpha: 0.75
-    )
+    material = SCNMaterial()
+    material.diffuse.contents = UIColor(hue: 0.58, saturation: 0.52, brightness: 0.86, alpha: 0.9)
+    material.locksAmbientWithDiffuse = true
+    
+    plane.geometry!.firstMaterial = material
   
     // Do physics to the plane
-    plane.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: plane.geometry!, options: nil))
+    plane.physicsBody = SCNPhysicsBody(
+      type: .kinematic,
+      shape: SCNPhysicsShape(
+        geometry: plane.geometry!,
+        options: nil
+      )
+    )
     plane.physicsBody!.friction = 1.0
   
     planeGeometry = plane.geometry as! SCNBox
   
     addChildNode(plane)
+  }
+  
+  func hide() {
+    material.diffuse.contents = UIColor.clear
+  }
+  
+  func show() {
+    material.diffuse.contents = UIColor(hue: 0.58, saturation: 0.52, brightness: 0.86, alpha: 0.9)
   }
   
   required init?(coder aDecoder: NSCoder) {

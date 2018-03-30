@@ -17,6 +17,7 @@
 		C2EDAC90206044690088EEC2 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2EDAC832060441A0088EEC2 /* Alamofire.framework */; };
 		C2EDAC91206044690088EEC2 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2EDAC832060441A0088EEC2 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2EDAC96206048B80088EEC2 /* getDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EDAC95206048B80088EEC2 /* getDestination.swift */; };
+		C2F4CDB82065D7C3009DDEBF /* Bust.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F4CDB72065D7C3009DDEBF /* Bust.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,7 @@
 		C2DE80FB2051B64B00E8DE77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2EDAC772060441A0088EEC2 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		C2EDAC95206048B80088EEC2 /* getDestination.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = getDestination.swift; sourceTree = "<group>"; tabWidth = 2; };
+		C2F4CDB72065D7C3009DDEBF /* Bust.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Bust.swift; sourceTree = "<group>"; tabWidth = 2; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +149,7 @@
 				C2DE80FB2051B64B00E8DE77 /* Info.plist */,
 				C21B77072052CFD900E41FA5 /* Plane.swift */,
 				C2EDAC95206048B80088EEC2 /* getDestination.swift */,
+				C2F4CDB72065D7C3009DDEBF /* Bust.swift */,
 			);
 			path = "4K Busts";
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2F4CDB82065D7C3009DDEBF /* Bust.swift in Sources */,
 				C2DE80F22051B64800E8DE77 /* ViewController.swift in Sources */,
 				C2EDAC96206048B80088EEC2 /* getDestination.swift in Sources */,
 				C21B77082052CFD900E41FA5 /* Plane.swift in Sources */,
