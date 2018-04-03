@@ -16,16 +16,13 @@ import Alamofire
 class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
   @IBOutlet var sceneView: ARSCNView!
   
-  // Keep track of the planes
-  var planes: [UUID:Plane] = [:]
-  
-  // Keep track of which type of block is selected
-  var selectedBlockType: Int = 0
-  
   // Hide the status bar
   override var prefersStatusBarHidden: Bool {
     return true
   }
+  
+  // Keep track of the planes
+  var planes: [UUID:Plane] = [:]
   
   // Add planes
   internal func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
@@ -380,7 +377,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
   @objc
   func handleTap(_ gestureRecognize: UIGestureRecognizer) {
     let location = gestureRecognize.location(in: view)
-    if location.y > view.frame.height - 50 {
+    // Avoid trying to place a bust when the tap location hits the toolbar
+    if location.y > view.frame.height - (view.safeAreaInsets.bottom + 44) {
       return
     }
     if let result = sceneView.hitTest(location, options: [:]).first {

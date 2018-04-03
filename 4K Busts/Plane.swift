@@ -35,10 +35,11 @@ class Plane: SCNNode {
   
     // Decorate the plane
     material = SCNMaterial()
-    material.diffuse.contents = UIColor(hue: 0.58, saturation: 0.52, brightness: 0.86, alpha: 0.9)
     material.locksAmbientWithDiffuse = true
     plane.geometry!.firstMaterial = material
     planeGeometry = plane.geometry as? SCNPlane
+    
+    self.show()
   
     addChildNode(plane)
   }
