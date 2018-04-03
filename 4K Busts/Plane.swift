@@ -14,7 +14,7 @@ class Plane: SCNNode {
   var anchor: ARPlaneAnchor!
   
   // The geometry of rendered to represent the plane as a physical object
-  var planeGeometry: SCNBox!
+  var planeGeometry: SCNPlane!
   
   var material: SCNMaterial!
   
@@ -22,18 +22,16 @@ class Plane: SCNNode {
     super.init()
   
     self.anchor = anchor
-    let planeHeight = CGFloat(0.001)
   
     // Create the plane
     let plane = SCNNode(
-      geometry: SCNBox(
+      geometry: SCNPlane(
         width: CGFloat(anchor.extent.x),
-        height: planeHeight,
-        length: CGFloat(anchor.extent.z),
-        chamferRadius: 0
+        height: CGFloat(anchor.extent.z)
       )
     )
-    plane.position = SCNVector3Make(0, 0, 0)
+    plane.position = SCNVector3Make(anchor.center.x, 0, anchor.center.z)
+    plane.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
   
     // Decorate the plane
     material = SCNMaterial()
@@ -52,7 +50,7 @@ class Plane: SCNNode {
     )
     plane.physicsBody!.friction = 1.0
   
-    planeGeometry = plane.geometry as! SCNBox
+    planeGeometry = plane.geometry as? SCNPlane
   
     addChildNode(plane)
   }
@@ -72,7 +70,7 @@ class Plane: SCNNode {
   // Adjust the dimensions of the representation of the plane based on new information
   func update(anchor: ARPlaneAnchor) {
     planeGeometry.width = CGFloat(anchor.extent.x)
-    planeGeometry.length = CGFloat(anchor.extent.z)
+    planeGeometry.height = CGFloat(anchor.extent.z)
   
     position = SCNVector3Make(anchor.center.x, 0, anchor.center.z)
   
