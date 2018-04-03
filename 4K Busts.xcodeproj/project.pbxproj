@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C21B77082052CFD900E41FA5 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21B77072052CFD900E41FA5 /* Plane.swift */; };
+		C225866A2073158700040B4B /* Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22586692073158700040B4B /* Picker.swift */; };
 		C2DE80EE2051B64800E8DE77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DE80ED2051B64800E8DE77 /* AppDelegate.swift */; };
 		C2DE80F02051B64800E8DE77 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = C2DE80EF2051B64800E8DE77 /* art.scnassets */; };
 		C2DE80F22051B64800E8DE77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DE80F12051B64800E8DE77 /* ViewController.swift */; };
@@ -95,6 +96,7 @@
 
 /* Begin PBXFileReference section */
 		C21B77072052CFD900E41FA5 /* Plane.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; tabWidth = 2; };
+		C22586692073158700040B4B /* Picker.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Picker.swift; sourceTree = "<group>"; tabWidth = 2; };
 		C2DE80EA2051B64800E8DE77 /* 4K Busts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "4K Busts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2DE80ED2051B64800E8DE77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C2DE80EF2051B64800E8DE77 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				C21B77072052CFD900E41FA5 /* Plane.swift */,
 				C2EDAC95206048B80088EEC2 /* getDestination.swift */,
 				C2F4CDB72065D7C3009DDEBF /* Bust.swift */,
+				C22586692073158700040B4B /* Picker.swift */,
 			);
 			path = "4K Busts";
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2F4CDB82065D7C3009DDEBF /* Bust.swift in Sources */,
+				C225866A2073158700040B4B /* Picker.swift in Sources */,
 				C2DE80F22051B64800E8DE77 /* ViewController.swift in Sources */,
 				C2EDAC96206048B80088EEC2 /* getDestination.swift in Sources */,
 				C21B77082052CFD900E41FA5 /* Plane.swift in Sources */,

@@ -13,7 +13,7 @@ import SceneKit.ModelIO
 import Foundation
 import Alamofire
 
-class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate {
   @IBOutlet var sceneView: ARSCNView!
   
   // Hide the status bar
@@ -47,8 +47,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
   
   var toolBar: UIToolbar?
   var alert: UIAlertController?
-  var pickerWrapper: UITextField!
-  var picker: UIPickerView!
+  var picker: Picker?
   
   var objURL: URL?
   var mtlURL: URL?
@@ -72,13 +71,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     sceneView.scene = SCNScene()
   
     // Make the world fancier
-    sceneView.scene.lightingEnvironment.contents = SCNMaterial.LightingModel.physicallyBased
     sceneView.pointOfView?.camera?.wantsHDR = true
-    
-    // Add physics
-    sceneView.scene.physicsWorld.gravity = SCNVector3Make(0.0, -1.225, 0.0)
-    sceneView.scene.physicsWorld.speed = 0.5
-    sceneView.scene.physicsWorld.contactDelegate = self
   
     // Attach tap recognition
     sceneView.addGestureRecognizer(
@@ -176,79 +169,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     present(alert!, animated: true, completion: nil)
   }
   
-  func numberOfComponents(in pickerView: UIPickerView) -> Int {
-    return 1;
-  }
-  
-  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    return busts.count
-  }
-  
-  func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return busts[row].name
-  }
-  
-  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    bust = busts[row]
-  }
-  
   func showPicker() {
-    pickerWrapper = UITextField(
-      frame: CGRect(
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0
-      )
+    picker = Picker(
+      options: self.busts,
+      viewFrame: view.frame
     )
-    
-    picker = UIPickerView(
-      frame: CGRect(
-        x: 0,
-        y: 0,
-        width: view.frame.width,
-        height: view.frame.height / 3
-      )
-    )
-    picker.autoresizingMask = .flexibleHeight
-    picker.showsSelectionIndicator = true
-    picker.delegate = self as UIPickerViewDelegate
-    picker.dataSource = self as UIPickerViewDataSource
-    
-    let toolBar = UIToolbar(
-      frame: CGRect(
-        x: 0,
-        y: 0,
-        width: view.frame.width,
-        height: 500
-      )
-    )
-    toolBar.barStyle = UIBarStyle.default
-    toolBar.isTranslucent = true
-    toolBar.sizeToFit()
-    
-    let doneButton = UIBarButtonItem(title: "Okay!", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.handlePicked))
-    let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-    let cancelButton = UIBarButtonItem(title: "Oops...", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.dismissPicker))
-    
-    toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
-    toolBar.isUserInteractionEnabled = true
-    
-    pickerWrapper.inputView = picker
-    pickerWrapper.inputAccessoryView = toolBar
-    pickerWrapper.becomeFirstResponder()
-    
-    picker.backgroundColor = .clear
-    let blurEffect = UIBlurEffect(style: .light)
-    let blurView = UIVisualEffectView(effect: blurEffect)
-    blurView.translatesAutoresizingMaskIntoConstraints = false
-    picker.insertSubview(blurView, at: 0)
-    
-    self.view.addSubview(pickerWrapper)
+    picker?.delegate = self
+    self.view.addSubview(picker!.pickerWrapper)
   }
   
   @objc func dismissPicker() {
-    pickerWrapper.resignFirstResponder()
+     picker!.pickerWrapper.resignFirstResponder()
   }
   
   @objc func handlePicked() {
