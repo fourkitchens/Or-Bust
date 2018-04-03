@@ -37,19 +37,7 @@ class Plane: SCNNode {
     material = SCNMaterial()
     material.diffuse.contents = UIColor(hue: 0.58, saturation: 0.52, brightness: 0.86, alpha: 0.9)
     material.locksAmbientWithDiffuse = true
-    
     plane.geometry!.firstMaterial = material
-  
-    // Do physics to the plane
-    plane.physicsBody = SCNPhysicsBody(
-      type: .kinematic,
-      shape: SCNPhysicsShape(
-        geometry: plane.geometry!,
-        options: nil
-      )
-    )
-    plane.physicsBody!.friction = 1.0
-  
     planeGeometry = plane.geometry as? SCNPlane
   
     addChildNode(plane)
@@ -73,9 +61,6 @@ class Plane: SCNNode {
     planeGeometry.height = CGFloat(anchor.extent.z)
   
     position = SCNVector3Make(anchor.center.x, 0, anchor.center.z)
-  
-    let node = childNodes.first!
-    node.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: planeGeometry, options: nil))
   }
 }
 
