@@ -184,6 +184,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate {
   
   @objc func handlePicked() {
     dismissPicker()
+    self.bust = picker?.selectedOption
     addBust()
   }
   

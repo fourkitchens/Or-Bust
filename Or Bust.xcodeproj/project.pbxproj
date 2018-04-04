@@ -97,7 +97,7 @@
 /* Begin PBXFileReference section */
 		C21B77072052CFD900E41FA5 /* Plane.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; tabWidth = 2; };
 		C22586692073158700040B4B /* Picker.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Picker.swift; sourceTree = "<group>"; tabWidth = 2; };
-		C2DE80EA2051B64800E8DE77 /* 4K Busts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "4K Busts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2DE80EA2051B64800E8DE77 /* Or Bust.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Or Bust.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2DE80ED2051B64800E8DE77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C2DE80EF2051B64800E8DE77 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		C2DE80F12051B64800E8DE77 /* ViewController.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -134,7 +134,7 @@
 		C2DE80EB2051B64800E8DE77 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C2DE80EA2051B64800E8DE77 /* 4K Busts.app */,
+				C2DE80EA2051B64800E8DE77 /* Or Bust.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,9 +174,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C2DE80E92051B64800E8DE77 /* 4K Busts */ = {
+		C2DE80E92051B64800E8DE77 /* Or Bust */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C2DE80FE2051B64B00E8DE77 /* Build configuration list for PBXNativeTarget "4K Busts" */;
+			buildConfigurationList = C2DE80FE2051B64B00E8DE77 /* Build configuration list for PBXNativeTarget "Or Bust" */;
 			buildPhases = (
 				C2DE80E62051B64800E8DE77 /* Sources */,
 				C2DE80E72051B64800E8DE77 /* Frameworks */,
@@ -188,9 +188,9 @@
 			dependencies = (
 				C2EDAC93206044690088EEC2 /* PBXTargetDependency */,
 			);
-			name = "4K Busts";
+			name = "Or Bust";
 			productName = "4K Busts";
-			productReference = C2DE80EA2051B64800E8DE77 /* 4K Busts.app */;
+			productReference = C2DE80EA2051B64800E8DE77 /* Or Bust.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -208,7 +208,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C2DE80E52051B64800E8DE77 /* Build configuration list for PBXProject "4K Busts" */;
+			buildConfigurationList = C2DE80E52051B64800E8DE77 /* Build configuration list for PBXProject "Or Bust" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -227,7 +227,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				C2DE80E92051B64800E8DE77 /* 4K Busts */,
+				C2DE80E92051B64800E8DE77 /* Or Bust */,
 			);
 		};
 /* End PBXProject section */
@@ -462,13 +462,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VU3TR37JS4;
+				DEVELOPMENT_TEAM = VQ7QH9V39A;
 				INFOPLIST_FILE = "4K Busts/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "fourkitchens.-K-Busts";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.fourkitchens.or-bust";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -481,13 +481,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VU3TR37JS4;
+				DEVELOPMENT_TEAM = VQ7QH9V39A;
 				INFOPLIST_FILE = "4K Busts/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "fourkitchens.-K-Busts";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.fourkitchens.or-bust";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -497,7 +497,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C2DE80E52051B64800E8DE77 /* Build configuration list for PBXProject "4K Busts" */ = {
+		C2DE80E52051B64800E8DE77 /* Build configuration list for PBXProject "Or Bust" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2DE80FC2051B64B00E8DE77 /* Debug */,
@@ -506,7 +506,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C2DE80FE2051B64B00E8DE77 /* Build configuration list for PBXNativeTarget "4K Busts" */ = {
+		C2DE80FE2051B64B00E8DE77 /* Build configuration list for PBXNativeTarget "Or Bust" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2DE80FF2051B64B00E8DE77 /* Debug */,
