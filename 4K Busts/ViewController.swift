@@ -45,7 +45,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate {
     planes.removeValue(forKey: anchor.identifier)
   }
   
-  var toolBar: UIToolbar?
+  var toolbar: UIToolbar?
   var alert: UIAlertController?
   var picker: Picker?
   
@@ -274,7 +274,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate {
   }
   
   func showToolbar() {
-    toolBar = UIToolbar(
+    toolbar = UIToolbar(
       frame: CGRect(
         origin: CGPoint(
           x: 0,
@@ -286,22 +286,31 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate {
         )
       )
     )
-    toolBar?.barStyle = UIBarStyle.default
-    toolBar?.isTranslucent = true
-    toolBar?.sizeToFit()
+    toolbar?.barStyle = UIBarStyle.default
+    toolbar?.isTranslucent = true
+    toolbar?.sizeToFit()
+    toolbar?.translatesAutoresizingMaskIntoConstraints = false
     
     let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
     let resetButton = UIBarButtonItem(title: "Reset!", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.reset))
     
-    toolBar?.setItems([spaceButton, resetButton, spaceButton], animated: false)
-    toolBar?.isUserInteractionEnabled = true
-    view.addSubview(toolBar!)
+    toolbar?.setItems([spaceButton, resetButton, spaceButton], animated: false)
+    toolbar?.isUserInteractionEnabled = true
+    
+    view.addSubview(toolbar!)
+    
+    NSLayoutConstraint.activate([
+      (toolbar?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor))!,
+      (toolbar?.leadingAnchor.constraint(equalTo: view.leadingAnchor))!,
+      (toolbar?.trailingAnchor.constraint(equalTo: view.trailingAnchor))!,
+      (toolbar?.heightAnchor.constraint(equalToConstant: 44))!
+    ])
   }
   
   @objc func reset() {
     bust = nil
     self.planes.forEach { $0.value.show() }
-    toolBar!.removeFromSuperview()
+    toolbar!.removeFromSuperview()
     node!.removeFromParentNode()
     textNode!.removeFromParentNode()
   }
