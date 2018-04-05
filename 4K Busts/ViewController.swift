@@ -13,7 +13,7 @@ import SceneKit.ModelIO
 import Foundation
 import Alamofire
 
-class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, ToolbarDelegate {
   @IBOutlet var sceneView: ARSCNView!
   
   // Hide the status bar
@@ -45,7 +45,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate {
     planes.removeValue(forKey: anchor.identifier)
   }
   
-  var toolbar: UIToolbar?
+  var toolbar: Toolbar?
   var alert: UIAlertController?
   var picker: Picker?
   
@@ -56,7 +56,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate {
   var busts: [Bust] = []
   var bust: Bust?
   var node: SCNNode?
-  var textNode: SCNNode?
   
   var targetCoordinates: SCNVector3?
   var worldTransform: SCNMatrix4?
@@ -166,23 +165,27 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate {
     loadingIndicator.startAnimating();
     alert?.view.addSubview(loadingIndicator)
 
-    present(alert!, animated: true, completion: nil)
+    present(
+      alert!,
+      animated: true,
+      completion: nil
+    )
   }
   
   func showPicker() {
     picker = Picker(
       options: self.busts,
-      viewFrame: view.frame
+      viewFrame: view.frame,
+      delegate: self
     )
-    picker?.delegate = self
     self.view.addSubview(picker!.pickerWrapper)
   }
   
-  @objc func dismissPicker() {
+  func dismissPicker() {
      picker!.pickerWrapper.resignFirstResponder()
   }
   
-  @objc func handlePicked() {
+  func handlePicked() {
     dismissPicker()
     self.bust = picker?.selectedOption
     addBust()
@@ -239,31 +242,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate {
             self.node?.addChildNode(childNode as SCNNode)
           }
           
-          let text = SCNText(string: "Hello, world!", extrusionDepth: 0)
-          text.font = UIFont(name: "Helvetica", size: 32)
-          let material = SCNMaterial()
-          material.diffuse.contents = UIColor(
-            hue: 0.36,
-            saturation: 0.63,
-            brightness: 0.82,
-            alpha: 0.9
-          )
-          material.locksAmbientWithDiffuse = true
-          text.firstMaterial = material
-          text.flatness = 1
-
-          self.textNode = SCNNode(geometry: text)
-          self.textNode?.position = SCNVector3(
-            x: self.targetCoordinates!.x - 0.2,
-            y: self.targetCoordinates!.y + 0.65,
-            z: self.targetCoordinates!.z + 0.25
-          )
-          self.textNode?.scale = SCNVector3(0.0025, 0.0025, 0.0025)
-          // Keep text facing camera
-          self.textNode?.constraints = [constraint]
-          
           self.sceneView.scene.rootNode.addChildNode(self.node!)
-          self.sceneView.scene.rootNode.addChildNode(self.textNode!)
           
           self.planes.forEach { $0.value.hide() }
           self.alert?.dismiss(animated: true, completion: nil)
@@ -274,45 +253,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate {
   }
   
   func showToolbar() {
-    toolbar = UIToolbar(
-      frame: CGRect(
-        origin: CGPoint(
-          x: 0,
-          y: view.frame.height - view.safeAreaInsets.bottom - 44
-        ),
-        size: CGSize(
-          width: view.frame.width,
-          height: view.safeAreaInsets.bottom + 44
-        )
-      )
+    toolbar = Toolbar(
+      parentView: view,
+      delegate: self
     )
-    toolbar?.barStyle = UIBarStyle.default
-    toolbar?.isTranslucent = true
-    toolbar?.sizeToFit()
-    toolbar?.translatesAutoresizingMaskIntoConstraints = false
     
-    let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-    let resetButton = UIBarButtonItem(title: "Reset!", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ViewController.reset))
+    guard let toolbar = toolbar else {
+      return
+    }
     
-    toolbar?.setItems([spaceButton, resetButton, spaceButton], animated: false)
-    toolbar?.isUserInteractionEnabled = true
-    
-    view.addSubview(toolbar!)
-    
-    NSLayoutConstraint.activate([
-      (toolbar?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor))!,
-      (toolbar?.leadingAnchor.constraint(equalTo: view.leadingAnchor))!,
-      (toolbar?.trailingAnchor.constraint(equalTo: view.trailingAnchor))!,
-      (toolbar?.heightAnchor.constraint(equalToConstant: 44))!
-    ])
+    // This really should just be toolbar, but when adding the UIToolbar as a subview on Toolbar, constraints got wacky
+    // I probably just don't understand constraints
+    view.addSubview(toolbar.toolbar)
+    toolbar.setConstraints(parentView: view)
   }
   
   @objc func reset() {
     bust = nil
     self.planes.forEach { $0.value.show() }
-    toolbar!.removeFromSuperview()
+    toolbar!.toolbar.removeFromSuperview()
     node!.removeFromParentNode()
-    textNode!.removeFromParentNode()
   }
   
   @objc

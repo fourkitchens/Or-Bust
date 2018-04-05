@@ -39,12 +39,15 @@ class Picker: UIView, UIPickerViewDataSource, UIPickerViewDelegate {
     selectedOption = options[row]
   }
   
-  init(options: [Bust], viewFrame: CGRect) {
+  init(options: [Bust], viewFrame: CGRect, delegate: PickerDelegate) {
     super.init(frame: viewFrame)
     
     // Store options
     self.options = options
     
+    // Save delegate
+    self.delegate = delegate
+
     // Create wrapper which will contain the picker and the picker toolbar
     pickerWrapper = UITextField(
       frame: CGRect(
