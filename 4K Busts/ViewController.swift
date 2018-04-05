@@ -95,7 +95,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
     presentWelcomeAlert()
   }
   
-  // fetch data from API
+  // Fetch data from API
   func fetchData(_: UIAlertAction) -> Void {
     showLoadingIndicator(message: "Fetching data...")
     Alamofire.request("https://us-central1-buster-198623.cloudfunctions.net/getBusts").responseJSON { response in
@@ -227,16 +227,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
           self.node = SCNNode()
           self.node?.position = SCNVector3(
             x: self.targetCoordinates!.x,
-            y: self.targetCoordinates!.y + 0.25,
+            y: self.targetCoordinates!.y + 0.1875,
             z: self.targetCoordinates!.z
+          )
+          self.node?.scale = SCNVector3(
+            0.75,
+            0.75,
+            0.75
+          )
+          self.node?.eulerAngles = SCNVector3Make(
+            0,
+            (self.sceneView.session.currentFrame?.camera.eulerAngles.y)!,
+            0
           )
           
           let constraint = SCNLookAtConstraint(target: self.sceneView.pointOfView)
           constraint.localFront = SCNVector3(0, 0, 1)
           constraint.isGimbalLockEnabled = true
-          
-          // Keep bust facing camera
-          self.node?.constraints = [constraint]
           
           for childNode in nodeArray {
             self.node?.addChildNode(childNode as SCNNode)
