@@ -52,14 +52,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
   var objURL: URL?
   var mtlURL: URL?
   var jpgURL: URL?
-  
+
   var busts: [Bust] = []
   var bust: Bust?
   var node: SCNNode?
   
   var targetCoordinates: SCNVector3?
-  var worldTransform: SCNMatrix4?
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
   
@@ -187,7 +186,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
   
   func handlePicked() {
     dismissPicker()
-    self.bust = picker?.selectedOption
+    
+    if((picker?.selectedOption) != nil) {
+      self.bust = picker?.selectedOption
+    } else {
+      self.bust = self.busts[0]
+    }
+    
     addBust()
   }
   
@@ -222,7 +227,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
           asset.loadTextures()
 
           let scene = SCNScene(mdlAsset: asset)
-          let nodeArray = scene.rootNode.childNodes
+          let mdlNode = scene.rootNode.childNodes.first
           
           self.node = SCNNode()
           self.node?.position = SCNVector3(
@@ -245,9 +250,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
           constraint.localFront = SCNVector3(0, 0, 1)
           constraint.isGimbalLockEnabled = true
           
-          for childNode in nodeArray {
-            self.node?.addChildNode(childNode as SCNNode)
-          }
+          self.node?.addChildNode(mdlNode!)
           
           self.sceneView.scene.rootNode.addChildNode(self.node!)
           
@@ -291,9 +294,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
     }
     if let result = sceneView.hitTest(location, options: [:]).first {
       if (!(bust != nil)) {
-        self.worldTransform = result.modelTransform
         self.targetCoordinates = result.worldCoordinates
-        self.bust = busts[0]
         showPicker()
       }
     }
