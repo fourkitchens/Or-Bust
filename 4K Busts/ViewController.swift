@@ -13,7 +13,7 @@ import SceneKit.ModelIO
 import Foundation
 import Alamofire
 
-class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, ToolbarDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, ToolbarDelegate, SCNPhysicsContactDelegate {
   @IBOutlet var sceneView: ARSCNView!
   
   // Hide the status bar
@@ -57,6 +57,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
   var bust: Bust?
   var node: SCNNode?
   
+  var isPhysicsEnabled: Bool = false
+  
   var targetCoordinates: SCNVector3?
 
   override func viewDidLoad() {
@@ -70,6 +72,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
   
     // Make the world fancier
     sceneView.pointOfView?.camera?.wantsHDR = true
+    
+    // Add physics
+    sceneView.scene.physicsWorld.gravity = SCNVector3Make(0.0, -1.225, 0.0)
+    sceneView.scene.physicsWorld.speed = 0.5
+    sceneView.scene.physicsWorld.contactDelegate = self
   
     // Attach tap recognition
     sceneView.addGestureRecognizer(
@@ -232,7 +239,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
           self.node = SCNNode()
           self.node?.position = SCNVector3(
             x: self.targetCoordinates!.x,
-            y: self.targetCoordinates!.y + 0.1875,
+            y: self.targetCoordinates!.y + 0.25,
             z: self.targetCoordinates!.z
           )
           self.node?.scale = SCNVector3(
@@ -246,9 +253,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
             0
           )
           
-          let constraint = SCNLookAtConstraint(target: self.sceneView.pointOfView)
-          constraint.localFront = SCNVector3(0, 0, 1)
-          constraint.isGimbalLockEnabled = true
+          if (self.isPhysicsEnabled) {
+            // Do physics to the bust
+            self.node?.physicsBody = SCNPhysicsBody(
+              type: .dynamic,
+              shape: SCNPhysicsShape(
+                geometry: (mdlNode!.geometry!),
+                options: nil
+              )
+            )
+            self.node?.physicsBody!.friction = 1.0
+          }
           
           self.node?.addChildNode(mdlNode!)
           

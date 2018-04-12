@@ -16,6 +16,8 @@ class Plane: SCNNode {
   // The geometry of rendered to represent the plane as a physical object
   var planeGeometry: SCNPlane!
   
+  var planePhysicsBody: SCNPhysicsBody!
+  
   var material: SCNMaterial!
   
   init(with anchor: ARPlaneAnchor) {
@@ -39,6 +41,18 @@ class Plane: SCNNode {
     plane.geometry!.firstMaterial = material
     planeGeometry = plane.geometry as? SCNPlane
     
+    // Do physics to the plane
+    plane.physicsBody = SCNPhysicsBody(
+      type: .kinematic,
+      shape: SCNPhysicsShape(
+        geometry: plane.geometry!,
+        options: nil
+      )
+    )
+    plane.physicsBody!.friction = 1.0
+    
+    planePhysicsBody = plane.physicsBody
+    
     self.show()
   
     addChildNode(plane)
@@ -60,6 +74,14 @@ class Plane: SCNNode {
   func update(anchor: ARPlaneAnchor) {
     planeGeometry.width = CGFloat(anchor.extent.x)
     planeGeometry.height = CGFloat(anchor.extent.z)
+    
+    planePhysicsBody = SCNPhysicsBody(
+      type: .kinematic,
+      shape: SCNPhysicsShape(
+        geometry: planeGeometry,
+        options: nil
+      )
+    )
   
     position = SCNVector3Make(anchor.center.x, 0, anchor.center.z)
   }
