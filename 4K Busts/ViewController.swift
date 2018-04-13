@@ -21,6 +21,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
     return true
   }
   
+  var spotlight = SCNNode()
+  
   // Keep track of the planes
   var planes: [UUID:Plane] = [:]
   
@@ -56,8 +58,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
   var busts: [Bust] = []
   var bust: Bust?
   var node: SCNNode?
-  
-  var isPhysicsEnabled: Bool = false
   
   var targetCoordinates: SCNVector3?
 
@@ -203,6 +203,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
     addBust()
   }
   
+  func addSpotlight() {
+    spotlight.light = SCNLight()
+    spotlight.light!.type = .directional
+    spotlight.light!.castsShadow = true
+    spotlight.light!.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+    spotlight.light!.shadowMode = .deferred
+    spotlight.light!.shadowRadius = 8
+    spotlight.light!.shadowSampleCount = 64
+    spotlight.constraints = [SCNLookAtConstraint(target: node)]
+    spotlight.position = SCNVector3(
+      x: self.targetCoordinates!.x,
+      y: self.targetCoordinates!.y + 10,
+      z: self.targetCoordinates!.z
+    )
+  }
+  
+  func removeSpotlight() {
+    spotlight.light = nil
+  }
+  
   // Add a bust to the world
   func addBust() {
     showLoadingIndicator(message: "Loading bust...")
@@ -239,31 +259,34 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
           self.node = SCNNode()
           self.node?.position = SCNVector3(
             x: self.targetCoordinates!.x,
-            y: self.targetCoordinates!.y + 0.25,
+            y: self.targetCoordinates!.y + 0.125,
             z: self.targetCoordinates!.z
           )
-          self.node?.scale = SCNVector3(
-            0.75,
-            0.75,
-            0.75
+          mdlNode?.scale = SCNVector3(
+            0.5,
+            0.5,
+            0.5
           )
           self.node?.eulerAngles = SCNVector3Make(
             0,
             (self.sceneView.session.currentFrame?.camera.eulerAngles.y)!,
             0
           )
-          
-          if (self.isPhysicsEnabled) {
-            // Do physics to the bust
-            self.node?.physicsBody = SCNPhysicsBody(
-              type: .dynamic,
-              shape: SCNPhysicsShape(
-                geometry: (mdlNode!.geometry!),
-                options: nil
-              )
+
+          // Do physics to the bust
+          self.node?.physicsBody = SCNPhysicsBody(
+            type: .dynamic,
+            shape: SCNPhysicsShape(
+              geometry: (mdlNode!.geometry!),
+              options: nil
             )
-            self.node?.physicsBody!.friction = 1.0
-          }
+          )
+          self.node?.physicsBody!.friction = 1.0
+          
+          self.spotlight.light = SCNLight()
+          self.addSpotlight()
+          
+          self.sceneView.scene.rootNode.addChildNode(self.spotlight)
           
           self.node?.addChildNode(mdlNode!)
           
@@ -289,6 +312,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
     
     // This really should just be toolbar, but when adding the UIToolbar as a subview on Toolbar, constraints got wacky
     // I probably just don't understand constraints
+    //
+    // I found a spot where I've done this before, just need to bring that over
     view.addSubview(toolbar.toolbar)
     toolbar.setConstraints(parentView: view)
   }
@@ -298,6 +323,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, PickerDelegate, Toolb
     self.planes.forEach { $0.value.show() }
     toolbar!.toolbar.removeFromSuperview()
     node!.removeFromParentNode()
+    removeSpotlight()
   }
   
   @objc

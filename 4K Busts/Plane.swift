@@ -19,6 +19,7 @@ class Plane: SCNNode {
   var planePhysicsBody: SCNPhysicsBody!
   
   var material: SCNMaterial!
+  var defaultColorBufferWriteMask: SCNColorMask!
   
   init(with anchor: ARPlaneAnchor) {
     super.init()
@@ -37,8 +38,11 @@ class Plane: SCNNode {
   
     // Decorate the plane
     material = SCNMaterial()
+    material.lightingModel = .blinn
     material.locksAmbientWithDiffuse = true
     plane.geometry!.firstMaterial = material
+    
+    defaultColorBufferWriteMask = material.colorBufferWriteMask
     planeGeometry = plane.geometry as? SCNPlane
     
     // Do physics to the plane
@@ -59,11 +63,13 @@ class Plane: SCNNode {
   }
   
   func hide() {
-    material.diffuse.contents = UIColor.clear
+    material.diffuse.contents = UIColor.white
+    material.colorBufferWriteMask = SCNColorMask(rawValue: 0)
   }
   
   func show() {
-    material.diffuse.contents = UIColor(hue: 0.58, saturation: 0.52, brightness: 0.86, alpha: 0.9)
+    material.diffuse.contents = UIColor(hue: 0.58, saturation: 0.52, brightness: 0.86, alpha: 0.75)
+    material.colorBufferWriteMask = defaultColorBufferWriteMask
   }
   
   required init?(coder aDecoder: NSCoder) {
